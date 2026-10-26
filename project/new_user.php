@@ -45,7 +45,7 @@ if(!empty($id) && !empty($pas) && !empty($pas2)&& !empty($name)&& !empty($adr)){
     $er="空欄を入力してください";
 }
 
-if($er!==0){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
     echo $er;
 }
 ?>
