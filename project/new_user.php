@@ -10,6 +10,7 @@
     <input type="submit" value="新規登録">
 </form>
 <?php
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
 $id=$_POST['id'];
 $pas=$_POST['pas'];
 $name=$_POST['name'];
@@ -19,33 +20,30 @@ $role='';
 $er=0;
 $check = $pdo->prepare('SELECT COUNT(*) FROM users WHERE user_id = ?');
 $check->execute([$id]);
-
-if(!empty($id) && !empty($pas) && !empty($pas2)&& !empty($name)&& !empty($adr)){
-    if($pas==$pas2){
-        if($check->fetchColumn()==0){
-            $ins=$pdo->prepare('insert into users (user_id, password,name,address,role) values (?, ?,?,?,?)');
-            if(true){
-                $role=true;
+    if(!empty($id) && !empty($pas) && !empty($pas2)&& !empty($name)&& !empty($adr)){
+        if($pas==$pas2){
+            if($check->fetchColumn()==0){
+                $ins=$pdo->prepare('insert into users (user_id, password,name,address,role) values (?, ?,?,?,?)');
+                if(true){
+                    $role=true;
+                }else{
+                    $role=false;
+                }
+                $ins->execute([$id,$pas,$name,$adr,$role]);
+                echo "<script>
+                alert('登録しました');
+                window.location.href = 'index.php';
+                </script>";
+                exit;
             }else{
-                $role=false;
+                $er="そのIDは既に登録されています";
             }
-            $ins->execute([$id,$pas,$name,$adr,$role]);
-            echo "<script>
-            alert('登録しました');
-            window.location.href = 'index.php';
-            </script>";
-            exit;
         }else{
-            $er="そのIDは既に登録されています";
+            $er="確認用パスワードが一致しません";
         }
     }else{
-        $er="確認用パスワードが一致しません";
+        $er="空欄を入力してください";
     }
-}else{
-    $er="空欄を入力してください";
-}
-
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
     echo $er;
 }
 ?>
