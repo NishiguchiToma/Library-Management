@@ -1,5 +1,8 @@
 <?php require 'config/database.php'; ?>
 <?php session_start(); ?>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <h1>新規登録</h1>
 <form action="new_user.php" method="post">
     <p>学籍番号・教員番号(ID)<input type="text" name="id"></p>
