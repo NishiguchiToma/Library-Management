@@ -24,7 +24,7 @@ $name=$_POST['name'];
 $adr=$_POST['address'];
 $pas2=$_POST['pas2'];
 $role='';
-$er=0;
+$er="";
 $check = $pdo->prepare('SELECT COUNT(*) FROM users WHERE user_id = ?');
 $check->execute([$id]);
     if(!empty($id) && !empty($pas) && !empty($pas2)&& !empty($name)&& !empty($adr)){
