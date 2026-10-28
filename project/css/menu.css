@@ -1,0 +1,59 @@
+/* ブラウザ共通の余白リセット */
+body, h1 {
+    margin: 0;
+    padding: 0;
+}
+
+/* 全体のヘッダー部分 */
+.header {
+    text-align: center;
+    font-family: sans-serif;
+    margin-top: 20px;    /* 画面上部からの距離 */
+}
+
+/* タイトル（図書管理システム）のスタイル */
+.header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 20px; /* タイトルとメニューの間の余白 */
+}
+
+.header h1 a {
+    color: #000;
+    text-decoration: none;
+}
+
+/* メニュー全体のレイアウト（横幅を広げ、中央配置、下の余白を固定） */
+.nav-menu {
+    display: flex;             
+    width: 100%;
+    max-width: 700px;          
+    margin: 0 auto;            
+    margin-bottom: 50px;       /* 各ページのタイトルとの間隔をここで完全に統一します */
+    border: 2px solid #005b7f; 
+    border-radius: 4px;
+    overflow: hidden;          
+}
+
+/* 各メニューボタンのスタイル（スリム＆完全に均等な幅） */
+.nav-menu a {
+    flex: 1;                   /* 5つのボタンの幅を完全に均等にする */
+    text-align: center;        
+    padding: 8px 10px;         /* 上下の余白をスリムに調整 */
+    color: #005b7f;            
+    background-color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;        /* 少しコンパクトな文字サイズ */
+    border-right: 1px solid #005b7f; 
+    transition: background-color 0.2s;
+}
+
+/* 一番右のボタンの右ボーダーを消す */
+.nav-menu a:last-child {
+    border-right: none;
+}
+
+/* マウスホバー時のエフェクト */
+.nav-menu a:hover {
+    background-color: #f0f7f9;
+}
