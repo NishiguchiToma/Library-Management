@@ -22,13 +22,13 @@ body, h1 {
     text-decoration: none;
 }
 
-/* メニュー全体のレイアウト（横幅を広げ、中央配置、下の余白を固定） */
+/* メニュー全体のレイアウト（6つに増えた分、max-widthを840pxに拡大して1つあたりの幅を維持） */
 .nav-menu {
     display: flex;             
     width: 100%;
-    max-width: 700px;          
+    max-width: 840px;          /* ★6つ並べても1つあたりの幅が変わらないように拡大しました */
     margin: 0 auto;            
-    margin-bottom: 50px;       /* 各ページのタイトルとの間隔をここで完全に統一します */
+    margin-bottom: 40px;       /* 各ページのタイトルとの間隔を完全に統一 */
     border: 2px solid #005b7f; 
     border-radius: 4px;
     overflow: hidden;          
@@ -36,7 +36,7 @@ body, h1 {
 
 /* 各メニューボタンのスタイル（スリム＆完全に均等な幅） */
 .nav-menu a {
-    flex: 1;                   /* 5つのボタンの幅を完全に均等にする */
+    flex: 1;                   /* 6つのボタンの幅を完全に均等にする */
     text-align: center;        
     padding: 8px 10px;         /* 上下の余白をスリムに調整 */
     color: #005b7f;            
