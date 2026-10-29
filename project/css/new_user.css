@@ -10,9 +10,22 @@ body {
     color: #333;
     background-color: #fff;
     padding: 20px;
+
+    /* ★スクロールバーを非表示にする設定（Chrome, Safari, Edge, Firefox, IE対応） */
+    overflow-y: scroll; /* スクロール領域自体は確保してズレを防ぐ */
 }
 
-/* 「新規登録」の見出し */
+/* Chrome, Safari, Edgeでスクロールバーを完全に非表示にする */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Firefoxでスクロールバーを非表示にする */
+body {
+    scrollbar-width: none;
+}
+
+/* 「新規登録」「ログイン」の見出し */
 h1 {
     font-size: 2.2rem;
     color: #0d475a;
@@ -22,25 +35,20 @@ h1 {
     font-weight: bold;
 }
 
-/* エラーメッセージ */
-p[style*="color: red;"] {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* フォーム全体のレイアウト */
+/* フォーム全体のレイアウト（完全に同じ幅・余白・中央寄せ） */
 form {
     max-width: 500px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: transparent;
+    border: none;
     padding: 0 20px;
+    box-sizing: border-box;
 }
 
-/* 各入力項目のブロック（項目名を太字にする） */
+/* 各入力項目のブロック */
 form p {
     margin-bottom: 25px;
-    font-weight: bold; /* ★項目名をしっかり太字にする */
+    font-weight: bold;
     color: #0d475a;
     font-size: 0.95rem;
 }
@@ -53,8 +61,8 @@ form input[type="password"] {
     margin-top: 8px;
     font-size: 1rem;
     font-family: inherit;
-    font-weight: normal;       /* 入力欄の中の文字は通常の太さにする */
-    border: 2px solid #0d475a; /* メインカラーの枠線 */
+    font-weight: normal;
+    border: 2px solid #0d475a;
     border-radius: 4px;
     box-sizing: border-box;
     background-color: #fff;
@@ -68,14 +76,14 @@ form input[type="password"]:focus {
     box-shadow: 0 0 5px rgba(13, 71, 90, 0.3);
 }
 
-/* 「新規登録」ボタン */
+/* 送信ボタン（新規登録・ログイン） */
 form input[type="submit"] {
     display: block;
     width: 100%;
     max-width: 250px;
     margin: 30px auto 0;
     padding: 14px;
-    background-color: #0d475a; /* メインカラー */
+    background-color: #0d475a;
     color: #fff;
     font-size: 1.1rem;
     font-family: inherit;
@@ -83,7 +91,7 @@ form input[type="submit"] {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color: 0.2s;
 }
 
 /* ボタンホバー時 */
@@ -91,7 +99,7 @@ form input[type="submit"]:hover {
     background-color: #093442;
 }
 
-/* 「ログインはこちら」などの下部リンク */
+/* 下部リンク */
 body > p {
     text-align: center;
     margin-top: 25px;
