@@ -37,7 +37,8 @@ $check->execute([$id]);
                 }else{
                     $role=false;
                 }
-                $ins->execute([$id,$pas,$name,$adr,$role]);
+                $h_pas = password_hash($pas, PASSWORD_DEFAULT);
+                $ins->execute([$id,$h_pas,$name,$adr,$role]);
                 echo "<script>
                 alert('登録しました');
                 window.location.href = 'index.php';

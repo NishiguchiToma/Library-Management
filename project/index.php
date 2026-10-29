@@ -7,9 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     unset($_SESSION['use']);
     $id=$_POST['id'];
     $pas=$_POST['pas'];
-    $sql=$pdo->prepare('select*from users where user_id=? and password=?');
-    $sql->execute([$id,$pas]);
-    foreach($sql as $row){
+    $sql = $pdo->prepare('select * from users where user_id = ?');
+    $sql->execute([$id]);
+    $row = $sql->fetch();
+    if ($row && password_verify($pas, $row['password'])){
+        session_regenerate_id(true);
         $_SESSION['use']=[
             'id'=>$row['user_id'],'pas'=>$row['password'],'name'=>$row['name'],'adr'=>$row['address'],'role'=>$row['role']
         ];
