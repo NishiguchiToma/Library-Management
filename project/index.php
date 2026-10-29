@@ -24,16 +24,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
 
 <h1>ログイン</h1>
-<form action="" method="post">
-    <p>学籍番号・教員番号(ID)<input type="text" name="id"></p>
-    <p>パスワード<input type="text" name="pas" onfocus="this.type='password'"></p>
-    <input type="submit" value="ログイン">
-</form>
+
 <?PHP
-if ($er!=="") {
-    echo $er;
+if ($er !== "") {
+    echo '<p style="color: red; text-align: center; font-weight: bold; margin-bottom: 20px;">' . htmlspecialchars($er, ENT_QUOTES, 'UTF-8') . '</p>';
 }
 ?>
+
+<form action="" method="post">
+    <p>学籍番号・教員番号(ID)<br><input type="text" name="id"></p>
+    <p>パスワード<br><input type="text" name="pas" onfocus="this.type='password'"></p>
+    <input type="submit" value="ログイン">
+</form>
+
 <p><a href="new_user.php">新規登録はこちら</a></p>
+
+</body>
+</html>
