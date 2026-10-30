@@ -1,82 +1,64 @@
-<?php require 'menu.php'; ?>
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>お気に入り | 図書館管理システム</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <title>お気に入り | 図書管理システム</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/favorite.css">
 </head>
-
 <body>
+    
+<!-- 共通ヘッダー -->
+<header class="header">
+    <h1><a href="home.php">図書管理システム</a></h1>
 
-    <!-- ヘッダー -->
-    <header class="header">
-        <h1>図書館管理システム</h1>
+    <nav class="nav-menu">
+        <a href="confirm.php">貸出確認</a>
+        <a href="favorite.php">お気に入り</a>
+        <a href="expired.php">期限切れ</a>
+        <a href="new_book.php">本登録</a>
+        <a href="history.php">履歴</a>
+        <a href="index.php">ログアウト</a>
+    </nav>
+</header>
 
-        <!-- スマホ用メニューボタン -->
-        <button class="menu-button" id="menuButton"
-                aria-label="メニューを開く"
-                aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+<!-- お気に入り画面 -->
+<main class="favorite-main">
 
-        <!-- ナビゲーションメニュー -->
-        <nav class="navigation" id="navigation">
-            <a href="#">貸出確認</a>
-            <a href="favorites.html" class="active">お気に入り</a>
-            <a href="#">期限切れ</a>
-            <a href="#">本登録</a>
-            <a href="#">履歴</a>
-        </nav>
-    </header>
+    <h2>お気に入り</h2>
 
-    <!-- メインコンテンツ -->
-    <main class="main">
+    <p class="favorite-title">本のタイトル</p>
 
-        <h2>お気に入り</h2>
+    <div class="favorite-list" id="favoriteList">
 
-        <p class="description">
-            お気に入りに登録した本の一覧です。
-        </p>
+        <label class="book">
+            <input type="checkbox" name="favorite" value="1">
+            <span>トマト農家</span>
+        </label>
 
-        <!-- お気に入り一覧 -->
-        <section class="favorite-list" id="favoriteList">
+        <label class="book">
+            <input type="checkbox" name="favorite" value="2">
+            <span>野鳥図鑑</span>
+        </label>
 
-            <label class="book">
-                <input type="checkbox" name="favorite" value="1">
-                <span>トマト農家</span>
-            </label>
+        <label class="book">
+            <input type="checkbox" name="favorite" value="3">
+            <span>酒ができるまで</span>
+        </label>
 
-            <label class="book">
-                <input type="checkbox" name="favorite" value="2">
-                <span>野鳥図鑑</span>
-            </label>
+    </div>
 
-            <label class="book">
-                <input type="checkbox" name="favorite" value="3">
-                <span>酒ができるまで</span>
-            </label>
+    <div class="delete-area">
+        <button type="button" id="deleteButton">削除</button>
+    </div>
 
-        </section>
+    <p id="message"></p>
 
-        <!-- 削除ボタン -->
-        <div class="button-area">
-            <button type="button" id="deleteButton" class="delete-button">
-                削除
-            </button>
-        </div>
+</main>
 
-        <!-- メッセージ表示 -->
-        <p id="message" role="status" aria-live="polite"></p>
-
-    </main>
-
-    <script src="js/script.js"></script>
+<script src="js/favorite.js"></script>
 
 </body>
 </html>
