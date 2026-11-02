@@ -1,0 +1,58 @@
+/* ページ全体の基本設定 */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+/* 「本の貸し出し履歴」などの見出しデザイン */
+h1 {
+    font-size: 22px;
+    color: #0d475a;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 30px;
+}
+
+/* テーブル（表）全体のデザイン */
+table {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* 画面中央に配置 */
+    border-collapse: collapse; /* 線の重なりをなくす */
+    table-layout: fixed; /* 3つの列の幅を均等に固定する */
+}
+
+/* テーブルの見出し（th） */
+th {
+    color: #0d475a;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    text-align: center;
+    width: 33.33%;
+    border-bottom: 2px solid #0d475a; /* 見出し下のきれいな横線 */
+}
+
+/* テーブルのデータ部分（td） */
+td {
+    padding: 15px 20px;
+    font-size: 15px;
+    text-align: center;
+    width: 33.33%;
+    border-bottom: 1px solid #e0e0e0; /* 行ごとの薄い境界線 */
+}
+
+/* ★ PHPを変更しなくても、データがない行（colspan="3"）に同じ調整が効くようにしています */
+td[colspan="3"] {
+    border-bottom: none;
+    font-weight: bold;   /* 太字にする */
+    padding-top: 35px;   /* 文字をもう少し下に下げる */
+}
+
+/* 未返却の予定日（(未)の部分）を赤色にする赤字強調 */
+.yotei-red {
+    color: red;
+}
