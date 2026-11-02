@@ -1,7 +1,7 @@
 <?php
 require 'menu.php'; 
 require 'config/database.php';
-
+session_start();
 try {
     $sql = "SELECT 
                 l.rental_day, 
@@ -25,10 +25,36 @@ try {
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>本の貸し出し履歴 - 図書館管理システム</title>
-    <link rel="stylesheet" href="css/history.css">
+    <title>新規本登録 - 図書館管理システム</title>
+    <link rel="stylesheet" href="css/new-book.css">
 </head>
 <body>
+<?php
+// 管理者権限チェック（roleが1以外の場合）
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
+    
+    // ① 拒否された回数をカウントする（セッションを使用）
+    if (!isset($_SESSION['history_deny_count'])) {
+        $_SESSION['history_deny_count'] = 1;
+    } else {
+        $_SESSION['history_deny_count']++;
+    }
+    $history_deny_count = $_SESSION['history_deny_count'];
+
+    // ② 回数に応じてエラーメッセージを変化させる
+    if ($history_deny_count === 1) {
+        $message = "お前は管理者じゃないので閲覧できません。";
+    } elseif ($history_deny_count === 2) {
+        $message = "だから見れないって";
+    } else {
+        $message = "{$history_deny_count}";
+    }
+
+    // ③ メッセージを出力して停止
+    echo '<p class="access-denied">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
+    exit;
+}
+?>
 
     <h1>本の貸し出し履歴</h1>
 

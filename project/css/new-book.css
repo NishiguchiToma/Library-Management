@@ -1,0 +1,145 @@
+/* ページ全体の基本設定 */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #0d475a;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+/* 見出しデザイン */
+h1 {
+    font-size: 22px;
+    color: #0d475a;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+/* エラーメッセージ */
+.error-msg {
+    color: red;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* フォーム全体のレイアウト：横幅をスリムに維持 */
+.book-form {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 各入力行 */
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form-row label {
+    width: 100px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #0d475a;
+}
+
+.form-input {
+    flex: 1;
+}
+
+/* 各種入力欄のデザイン */
+.text-input,
+.select-input,
+.number-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 15px;
+    color: #0d475a;
+    border: none;
+    border-bottom: 2px solid #0d475a;
+    background-color: transparent;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* ファイル選択ボタン */
+.file-input {
+    font-size: 14px;
+    color: #0d475a;
+}
+
+/* 補足エリア */
+.form-group-block {
+    margin-bottom: 25px;
+}
+
+.form-group-block label {
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    color: #0d475a;
+    margin-bottom: 10px;
+}
+
+.textarea-input {
+    width: 100%;
+    height: 110px;
+    padding: 10px;
+    font-size: 15px;
+    color: #0d475a;
+    border: 2px solid #0d475a;
+    border-radius: 4px;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* ボタン周りのレイアウト */
+.form-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 35px;
+    margin-bottom: 40px;
+}
+
+/* 登録ボタン（ボタンの大きさは変えず、文字サイズだけを大きく） */
+.btn-submit {
+    background-color: #0d475a;
+    color: #fff;
+    font-size: 18px; /* 文字を大きく */
+    font-weight: bold;
+    padding: 9px 32px; /* パディングを調整してボタン全体の大きさを維持 */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+/* 戻るボタン */
+.btn-back {
+    color: #0d475a;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+.btn-back:hover {
+    text-decoration: underline;
+}
+
+.access-denied {
+    text-align: center;
+    color: #0d475a;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 60px;
+}
