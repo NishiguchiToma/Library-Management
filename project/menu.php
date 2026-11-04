@@ -13,7 +13,7 @@
             <a href="expired.php">期限切れ</a>
             <a href="new-book.php">本登録</a>
             <a href="history.php">履歴</a>
-            <a href="index.php">ログアウト</a>
+            <a href="logout.php">ログアウト</a>
         </nav>
     </header>
 
