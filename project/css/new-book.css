@@ -143,3 +143,12 @@ h1 {
     font-weight: bold;
     margin-top: 60px;
 }
+
+/* 100回ごとの特別警告用スタイル（大きく赤色） */
+.access-denied-special {
+    text-align: center !important;
+    color: #ff0000 !important;     /* 真っ赤な文字 */
+    font-size: 24px !important;    /* 大きくする */
+    font-weight: bold !important;
+    margin-top: 60px !important;
+}

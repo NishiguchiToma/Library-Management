@@ -1,7 +1,7 @@
 <?php
+session_start();
 require 'menu.php'; 
 require 'config/database.php';
-session_start();
 try {
     $sql = "SELECT 
                 l.rental_day, 
@@ -26,12 +26,12 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>新規本登録 - 図書館管理システム</title>
-    <link rel="stylesheet" href="css/new-book.css">
+    <link rel="stylesheet" href="css/history.css">
 </head>
 <body>
 <?php
 // 管理者権限チェック（roleが1以外の場合）
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
+if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
     
     // ① 拒否された回数をカウントする（セッションを使用）
     if (!isset($_SESSION['history_deny_count'])) {
@@ -43,15 +43,20 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
 
     // ② 回数に応じてエラーメッセージを変化させる
     if ($history_deny_count === 1) {
-        $message = "お前は管理者じゃないので閲覧できません。";
+        $message = "あなたは管理者じゃないので閲覧できません。";
+        $css_class = "access-denied";
     } elseif ($history_deny_count === 2) {
         $message = "お前は管理者じゃない！";
-    } else {
+        $css_class = "access-denied";
+    } elseif ($history_deny_count > 0 && $history_deny_count % 100 === 0) {
+        $message = "祝！{$history_deny_count}回";
+        $css_class = "access-denied-special";
+    }else {
         $message = "開いた回数:{$history_deny_count}";
+        $css_class = "access-denied";
     }
 
-    // ③ メッセージを出力して停止
-    echo '<p class="access-denied">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
+    echo '<p class="' . $css_class . '">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
     exit;
 }
 ?>

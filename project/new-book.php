@@ -1,6 +1,6 @@
+<?php session_start(); ?>
 <?php require 'menu.php'; ?>
 <?php require 'config/database.php'; ?>
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,7 +11,7 @@
 <body>
 <?php
 // 管理者権限チェック（roleが1以外の場合）
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
+if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
     
     // ① 拒否された回数をカウントする（セッションを使用）
     if (!isset($_SESSION['new_book_deny_count'])) {
@@ -23,13 +23,19 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
 
     // ② 回数に応じてエラーメッセージを変化させる
     if ($new_book_deny_count === 1) {
-        $message = "お前は管理者じゃないので閲覧できません。";
+        $message = "あなたは管理者じゃないので閲覧できません。";
+        $css_class = "access-denied";
     } elseif ($new_book_deny_count === 2) {
         $message = "お前は管理者じゃない！";
-    } else {
+        $css_class = "access-denied";
+    } elseif ($new_book_deny_count > 0 && $new_book_deny_count % 100 === 0) {
+        $message = "祝！{$new_book_deny_count}回";
+        $css_class = "access-denied-special";
+    }else {
         $message = "開いた回数:{$new_book_deny_count}";
+        $css_class = "access-denied";
     }
-    echo '<p class="access-denied">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
+    echo '<p class="' . $css_class . '">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
     exit;
 }
 ?>
