@@ -45,9 +45,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     if ($history_deny_count === 1) {
         $message = "お前は管理者じゃないので閲覧できません。";
     } elseif ($history_deny_count === 2) {
-        $message = "だから見れないって";
+        $message = "お前は管理者じゃない！";
     } else {
-        $message = "{$history_deny_count}";
+        $message = "開いた回数:{$history_deny_count}";
     }
 
     // ③ メッセージを出力して停止

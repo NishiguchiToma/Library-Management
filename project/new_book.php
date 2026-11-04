@@ -25,9 +25,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     if ($new_book_deny_count === 1) {
         $message = "お前は管理者じゃないので閲覧できません。";
     } elseif ($new_book_deny_count === 2) {
-        $message = "だから見れないって";
+        $message = "お前は管理者じゃない！";
     } else {
-        $message = "{$new_book_deny_count}";
+        $message = "開いた回数:{$new_book_deny_count}";
     }
     echo '<p class="access-denied">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
     exit;
