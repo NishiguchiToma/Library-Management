@@ -4,11 +4,62 @@
 <?php
 $word=$_POST['word'];
 $if=0;
+
+enum Genre: string
+{
+    case Php = 'php';
+    case Java = 'java';
+    case Javascript = 'javascript';
+    case Python = 'python';
+    case Html = 'html';
+    public function label(): string
+    {
+        return match($this) {
+            self::Php => 'PHP',
+            self::Java => 'Java',
+            self::Javascript => 'JavaScript',
+            self::Python => 'Python',
+            self::Html => 'HTML',
+        };
+    }
+}
+$genre = Genre::cases();
 ?>
+<style>
+    #text{
+        display: none;
+    }
+</style>
 <form action="" method="post">
     <input type="submit" value="🔍">
     <input type="text" placeholder="検索" name="word">
+    <button type="button" id="btn">▼</button>
+
+    <div id="text">
+        <label>
+            <select>
+                <option>指定なし</option>
+                <?php
+                    
+                ?>
+            </select>
+        </label>
+    </div>
+
 </form>
+
+<script>
+    const button = document.getElementById('btn');
+    const text = document.getElementById('text');
+
+    button.addEventListener('click', function(){
+        if(text.style.display === 'none' || text.style.display === ''){
+            text.style.display = 'block'; 
+        }else{
+             text.style.display = 'none';
+        }
+    })
+</script>
 
 <tr>
 <?php

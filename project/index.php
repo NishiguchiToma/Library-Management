@@ -1,5 +1,5 @@
-<?php require 'config/database.php'; ?>
 <?php session_start(); ?>
+<?php require 'config/database.php'; ?>
 
 <?php
 $er="";
