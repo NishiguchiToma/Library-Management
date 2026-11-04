@@ -46,7 +46,9 @@ enum Genre: string
     case Java = 'java';
     case Javascript = 'javascript';
     case Python = 'python';
-    case Html = 'html';
+    case HtmlCss = 'html css';
+    case FundamentalInfo = '基本情報';
+    case Other = 'その他';
     public function label(): string
     {
         return match($this) {
@@ -54,7 +56,9 @@ enum Genre: string
             self::Java => 'Java',
             self::Javascript => 'JavaScript',
             self::Python => 'Python',
-            self::Html => 'HTML',
+            self::HtmlCss => 'HTML/CSS',
+            self::FundamentalInfo => '基本情報',
+            self::Other => 'その他',
         };
     }
 }
