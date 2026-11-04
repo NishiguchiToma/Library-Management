@@ -4,7 +4,7 @@
 <?php
 $word = $_POST['word'] ?? '';
 $if=0;
-
+$s_genre= $_POST['genre'] ?? ''; 
 enum Genre: string
 {
     case Php = 'php';
@@ -39,12 +39,19 @@ $genre = Genre::cases();
     <input type="text" placeholder="検索" name="word">
     <button type="button" id="btn">▼</button>
 
-    <div id="text">
+    <div id="text" style="display: <?php if ($s_genre !== '') { echo 'block'; } else { echo 'none'; } ?>;">
         <label>
-            <select>
-                <option>指定なし</option>
+            <select name="genre">
+                <option value="">指定なし</option>
                 <?php
-                    
+                    foreach($genre as $g){
+                        $selected = ($s_genre === $g->value) ? 'selected' : '';
+                        echo "
+                        <option value='{$g->value}' {$selected}>
+                             {$g->label()}
+                        </option>
+                        ";
+                    }
                 ?>
             </select>
         </label>
@@ -65,21 +72,19 @@ $genre = Genre::cases();
     })
 </script>
 
+
+
+
 <tr>
 <?php
 if($word==''){
-    foreach($pdo->query('select*from book') as $row){
-        $img=base64_encode($row['book_image']);
-        echo "<td> 
-        <p><img src='data:image/png;base64,{$img}' alt='book image' style='height: 200px; width: auto;'></p>
-        <p> {$row['title']} </p>
-        </td>
-        ";
+    if($s_genre == ''){
+        $sql = $pdo->query('select * from book');
+    }else{
+        $sql = $pdo->prepare('select * from book where genre = ?');
+        $sql->execute([$s_genre]);
     }
-    echo "</tr>";
-}else{
-    $sql=$pdo->prepare('select*from book where title like ?');
-    $sql->execute(['%'.$word.'%']);
+
     foreach($sql as $row){
         $if=1;
         $img=base64_encode($row['book_image']);
@@ -89,8 +94,30 @@ if($word==''){
         </td>
         ";
     }
+
     if($if==0){
         echo "<h1>該当なし</h1>";
+    }
+}else{
+    if($s_genre == ''){
+        $sql = $pdo->prepare('select * from book where title like ?');
+        $sql->execute(['%'.$word.'%']);
+    }else{
+        $sql = $pdo->prepare('select * from book where title like ? and genre = ?');
+        $sql->execute(['%'.$word.'%', $s_genre]);
+    }
+
+    foreach($sql as $row){
+        $if = 1;
+        $img = base64_encode($row['book_image']);
+        echo "<td> 
+        <p><img src='data:image/png;base64,{$img}' alt='book image' style='height: 200px; width: auto;'></p>
+        <p> {$row['title']} </p>
+        </td>";
+    }
+    
+    if($if == 0){
+        echo "<td><h1>該当なし</h1></td>";
     }
 }
 ?>
