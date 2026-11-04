@@ -1,0 +1,13 @@
+.b1{
+    margin-top: 30px;
+    display: flex;
+}
+.b2{
+    text-align: center;
+    background-color: rgb(181, 181, 235);
+    height: 250px;
+    width: 250px;
+}
+.b2 p,h1{
+    margin: 0;
+}

@@ -1,6 +1,7 @@
 <?php session_start(); ?>
 <?php require 'config/database.php'; ?>
 <?php require 'menu.php'; ?>
+<link rel="stylesheet" href="css/home.css">
 <?php
 $word = $_POST['word'] ?? '';
 $if=0;
@@ -72,10 +73,7 @@ $genre = Genre::cases();
     })
 </script>
 
-
-
-
-<tr>
+<div class="b1">
 <?php
 if($word==''){
     if($s_genre == ''){
@@ -88,10 +86,10 @@ if($word==''){
     foreach($sql as $row){
         $if=1;
         $img=base64_encode($row['book_image']);
-        echo "<td> 
+        echo "<div class='b2'>
         <p><img src='data:image/png;base64,{$img}' alt='book image' style='height: 200px; width: auto;'></p>
         <p> {$row['title']} </p>
-        </td>
+        </div>
         ";
     }
 
@@ -110,10 +108,10 @@ if($word==''){
     foreach($sql as $row){
         $if = 1;
         $img = base64_encode($row['book_image']);
-        echo "<td> 
+        echo "<div class='b2'> 
         <p><img src='data:image/png;base64,{$img}' alt='book image' style='height: 200px; width: auto;'></p>
         <p> {$row['title']} </p>
-        </td>";
+        </div>";
     }
     
     if($if == 0){
@@ -121,4 +119,4 @@ if($word==''){
     }
 }
 ?>
-</tr>
+</div>
