@@ -1,5 +1,5 @@
-<?php require 'config/database.php'; ?>
 <?php session_start(); ?>
+<?php require 'config/database.php'; ?>
 <?php
 $pattern = '/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,}\z/';
 ?>

@@ -1,6 +1,6 @@
+<?php session_start(); ?>
 <?php require 'menu.php'; ?>
 <?php require 'config/database.php'; ?>
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
