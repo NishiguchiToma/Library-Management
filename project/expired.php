@@ -43,11 +43,7 @@ $lending_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><?php echo htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); ?></td>
             <td><?php echo htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8'); ?></td>
             <td>
-                <?php echo htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8'); ?>
-    
-                <span class="overdue-text">
-                    （+<?php echo htmlspecialchars($row['overdue_days'], ENT_QUOTES, 'UTF-8'); ?>日）
-                </span>
+                <?php echo htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8'); ?><span class="overdue-text">（+<?php echo htmlspecialchars($row['overdue_days'], ENT_QUOTES, 'UTF-8'); ?>日）</span>
             </td>
         </tr>
         <?php endforeach; ?>
