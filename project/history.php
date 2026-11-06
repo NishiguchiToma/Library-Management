@@ -42,10 +42,10 @@ if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
     $history_deny_count = $_SESSION['history_deny_count'];
 
     // ② 回数に応じてエラーメッセージを変化させる
-    if ($history_deny_count === 1) {
+    if ($history_deny_count < 4) {
         $message = "あなたは管理者じゃないので閲覧できません。";
         $css_class = "access-denied";
-    } elseif ($history_deny_count === 2) {
+    } elseif ($history_deny_count < 5) {
         $message = "お前は管理者じゃない！";
         $css_class = "access-denied";
     } elseif ($history_deny_count > 0 && $history_deny_count % 100 === 0) {

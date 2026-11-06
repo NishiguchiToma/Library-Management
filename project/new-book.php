@@ -22,10 +22,10 @@ if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
     $new_book_deny_count = $_SESSION['new_book_deny_count'];
 
     // ② 回数に応じてエラーメッセージを変化させる
-    if ($new_book_deny_count === 1) {
+    if ($new_book_deny_count < 4) {
         $message = "あなたは管理者じゃないので閲覧できません。";
         $css_class = "access-denied";
-    } elseif ($new_book_deny_count === 2) {
+    } elseif ($new_book_deny_count < 5) {
         $message = "お前は管理者じゃない！";
         $css_class = "access-denied";
     } elseif ($new_book_deny_count > 0 && $new_book_deny_count % 100 === 0) {
