@@ -42,10 +42,11 @@ td {
     font-size: 15px;
     text-align: center;
     width: 33.33%;
-    border-bottom: 1px solid #e0e0e0; /* 行ごとの薄い境界線 */
+    border-bottom: none;          /* ★行ごとの間の線を削除 */
+    font-weight: bold;            /* ★文字を太字にする */
 }
 
-/* ★「現在、返却期限切れの本はありません。」の行の調整 */
+/* 「現在、返却期限切れの本はありません。」などの行の調整 */
 td.no-border {
     border-bottom: none;
     font-weight: bold;   /* 太字にする */

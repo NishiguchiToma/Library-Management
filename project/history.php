@@ -69,7 +69,7 @@ if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
         <table>
             <thead>
                 <tr>
-                    <th>日付</th>
+                    <th>返却日/返却予定日</th>
                     <th>名前</th>
                     <th>タイトル</th>
                 </tr>
@@ -84,9 +84,9 @@ if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
                         <tr>
                             <td>
                                 <?php if (empty($row['return_day'])): ?>
-                                    <?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~(未)<span class="yotei-red"><?= htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8') ?></span>
+                                    <span class="status-red">(未) </span><?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~<?= htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8') ?>
                                 <?php else: ?>
-                                    <?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~(済)<?= htmlspecialchars($row['return_day'], ENT_QUOTES, 'UTF-8') ?>
+                                    (済) <?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~<?= htmlspecialchars($row['return_day'], ENT_QUOTES, 'UTF-8') ?>
                                 <?php endif; ?>
                             </td>
                             <td><?= htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>

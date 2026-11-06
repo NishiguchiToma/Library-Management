@@ -42,17 +42,18 @@ td {
     font-size: 15px;
     text-align: center;
     width: 33.33%;
-    border-bottom: 1px solid #e0e0e0; /* 行ごとの薄い境界線 */
+    border-bottom: none;          /* ★行ごとの間の線を削除 */
+    font-weight: bold;            /* ★文字を太字にする */
 }
 
-/* ★ PHPを変更しなくても、データがない行（colspan="3"）に同じ調整が効くようにしています */
+/* データがない行（colspan="3"）の調整 */
 td[colspan="3"] {
     border-bottom: none;
     font-weight: bold;   /* 太字にする */
     padding-top: 35px;   /* 文字をもう少し下に下げる */
 }
 
-/* 未返却の予定日（(未)の部分）を赤色にする赤字強調 */
+/* 未返却の予定日（(未)の部分）を赤字強調 */
 .yotei-red {
     color: red;
 }
@@ -60,7 +61,7 @@ td[colspan="3"] {
 /* 100回ごとの特別警告用スタイル（大きく赤色） */
 .access-denied-special {
     text-align: center !important;
-    color: #ff0000 !important;     /* 真っ赤な文字 */
+    color: #ff0000 !important;    /* 真っ赤な文字 */
     font-size: 24px !important;    /* 大きくする */
     font-weight: bold !important;
     margin-top: 60px !important;
@@ -73,4 +74,9 @@ td[colspan="3"] {
     font-size: 16px;
     font-weight: bold;
     margin-top: 60px;
+}
+/* 「(未)」の文字を赤色にするスタイル */
+.status-red {
+    color: red;
+    font-weight: bold;
 }
