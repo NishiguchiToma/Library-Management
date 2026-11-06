@@ -71,7 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $hosoku = $_POST['hosoku'] ?? '';
 
     if (!empty($_FILES['file']['tmp_name']) && !empty($title) && !empty($genre) && !empty($count)){
-        $book_image = file_get_contents($_FILES['file']['tmp_name']);
+        // $book_image = file_get_contents($_FILES['file']['tmp_name']);
+        $tmp_name = $_FILES['file']['tmp_name'];
+        $src_image = @imagecreatefromstring(file_get_contents($tmp_name));
+
+        if ($src_image !== false) {
+            ob_start();
+            // 画質を70%に落としてJPEGとして圧縮出力（これでファイルサイズが激減します）
+            imagejpeg($src_image, null, 70); 
+            $book_image = ob_get_clean();
+            imagedestroy($src_image);
+        }
         $hyouji = 1;
         $rental = 0;
         try{
