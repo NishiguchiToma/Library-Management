@@ -2,10 +2,13 @@
 <?php require 'config/database.php'; ?>
 <?php require 'menu.php'; ?>
 <link rel="stylesheet" href="css/home.css">
+<!-- JavaScriptファイルを外部読み込み -->
+<script src="js/home.js" defer></script>
 <?php
 $word = $_POST['word'] ?? '';
-$if=0;
-$s_genre= $_POST['genre'] ?? ''; 
+$if = 0;
+$s_genre = $_POST['genre'] ?? ''; 
+
 enum Genre: string
 {
     case Php = 'php';
@@ -30,52 +33,42 @@ enum Genre: string
 }
 $genre = Genre::cases();
 ?>
-<style>
-    #text{
-        display: none;
-    }
-</style>
-<form action="" method="post">
-    <input type="submit" value="🔍">
-    <input type="text" placeholder="検索" name="word">
-    <button type="button" id="btn">▼</button>
 
-    <div id="text" style="display: <?php if ($s_genre !== '') { echo 'block'; } else { echo 'none'; } ?>;">
-        <label>
-            <select name="genre">
-                <option value="">指定なし</option>
-                <?php
-                    foreach($genre as $g){
-                        $selected = ($s_genre === $g->value) ? 'selected' : '';
-                        echo "
-                        <option value='{$g->value}' {$selected}>
-                             {$g->label()}
-                        </option>
-                        ";
-                    }
-                ?>
-            </select>
-        </label>
+<!-- 検索・ジャンル絞り込みフォーム -->
+<form action="" method="post" class="search-form-container" id="searchForm">
+    <div class="search-bar">
+        <!-- 検索入力欄 -->
+        <input type="text" placeholder="検索" name="word" value="<?php echo htmlspecialchars($word, ENT_QUOTES, 'UTF-8'); ?>">
+        <button type="submit" style="display:none;"></button>
+        <!-- ↑透明なボタンにすることでエンターをクリックしたら検索が実行されるようにしてる -->
+        
+        <!-- 絞り込み用 ▼ ボタン -->
+        <button type="button" id="filterBtn" class="filter-toggle-btn">▼</button>
+        
+        <!-- 選択されたジャンルを保持する隠しフィールド -->
+        <input type="hidden" name="genre" id="genreInput" value="<?php echo htmlspecialchars($s_genre, ENT_QUOTES, 'UTF-8'); ?>">
+        
+        <!-- ▼を押したとき、一番上に「指定なし」を追加したカスタムメニュー -->
+        <div id="genreDropdown" class="custom-genre-dropdown" style="display: none;">
+            <?php
+                // 一番上に「指定なし（絞り込み解除）」の項目を配置
+                $active_all = ($s_genre === '') ? ' active' : '';
+                echo '<div class="genre-option' . $active_all . '" data-value="">指定なし</div>';
+
+                // 各ジャンルのループ
+                foreach($genre as $g){
+                    $active = ($s_genre === $g->value) ? ' active' : '';
+                    echo '<div class="genre-option' . $active . '" data-value="' . htmlspecialchars($g->value, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($g->label(), ENT_QUOTES, 'UTF-8') . '</div>';
+                }
+            ?>
+        </div>
     </div>
-
 </form>
 
-<script>
-    const button = document.getElementById('btn');
-    const text = document.getElementById('text');
-
-    button.addEventListener('click', function(){
-        if(text.style.display === 'none' || text.style.display === ''){
-            text.style.display = 'block'; 
-        }else{
-             text.style.display = 'none';
-        }
-    })
-</script>
-
+<!-- 本棚のグリッド表示エリア -->
 <div class="b1">
 <?php
-if($word==''){
+if($word == ''){
     if($s_genre == ''){
         $sql = $pdo->query('select * from book');
     }else{
@@ -84,17 +77,18 @@ if($word==''){
     }
 
     foreach($sql as $row){
-        $if=1;
-        $img=base64_encode($row['book_image']);
+        $if = 1;
+        $img = base64_encode($row['book_image']);
         echo "<div class='b2'>
-        <p><img src='data:image/png;base64,{$img}' alt='book image' style='height: 200px; width: auto;'></p>
-        <p> {$row['title']} </p>
+        <div class='image-container'>
+            <img src='data:image/png;base64,{$img}' alt='book image'>
         </div>
-        ";
+        <p>{$row['title']}</p>
+        </div>";
     }
 
-    if($if==0){
-        echo "<h1>該当なし</h1>";
+    if($if == 0){
+        echo "<h1 class='no-result'>該当なし</h1>";
     }
 }else{
     if($s_genre == ''){
@@ -109,13 +103,15 @@ if($word==''){
         $if = 1;
         $img = base64_encode($row['book_image']);
         echo "<div class='b2'> 
-        <p><img src='data:image/png;base64,{$img}' alt='book image' style='height: 200px; width: auto;'></p>
-        <p> {$row['title']} </p>
+        <div class='image-container'>
+            <img src='data:image/png;base64,{$img}' alt='book image'>
+        </div>
+        <p>{$row['title']}</p>
         </div>";
     }
     
     if($if == 0){
-        echo "<td><h1>該当なし</h1></td>";
+        echo "<h1 class='no-result'>該当なし</h1>";
     }
 }
 ?>
