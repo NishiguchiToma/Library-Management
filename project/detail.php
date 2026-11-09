@@ -2,8 +2,8 @@
 <?php require 'config/database.php'; ?>
 <?php require 'menu.php'; ?>
 <?php
-$i=$_POST['id']?? '';
-    $i=1;
+$i=$_GET['id']?? '';
+    // $i=1;
 $sql=$pdo->prepare('select*from book where book_id=?');
 $sql->execute([$i]);
 $row = $sql->fetch();
