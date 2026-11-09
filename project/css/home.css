@@ -50,6 +50,12 @@
     font-weight: bold;
     color: #0d475a;
     font-size: 0.8rem;            /* カードの縮小に合わせて文字サイズも微調整 */
+    text-decoration: none;
+}
+
+.b2 a {
+    text-decoration: none !important; /* ★リンクの下線を消す */
+    color: inherit;                   /* 色が変わるのを防ぐ */
 }
 
 /* === 「該当なし」メッセージのスタイル === */
