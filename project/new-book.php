@@ -157,8 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         <div class="form-group-block">
             <label>補足</label>
             <textarea name="hosoku" class="textarea-input"></textarea>
+            <p class="onega">画像の比率は4:3でお願い</p>
         </div>
-
         <div class="form-buttons">
             <input type="submit" value="登録" class="btn-submit">
         </div>
