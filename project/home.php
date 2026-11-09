@@ -79,11 +79,14 @@ if($word == ''){
     foreach($sql as $row){
         $if = 1;
         $img = base64_encode($row['book_image']);
-        echo "<div class='b2'>
-        <div class='image-container'>
-            <img src='data:image/png;base64,{$img}' alt='book image'>
-        </div>
-        <p>{$row['title']}</p>
+        echo "
+        <div class='b2'>
+            <a href='detail.php?id={$row['book_id']}'>
+                <div class='image-container'>
+                    <img src='data:image/png;base64,{$img}' alt='book image'>
+                </div>
+                <p>{$row['title']}</p>
+            </a>
         </div>";
     }
 
@@ -102,11 +105,14 @@ if($word == ''){
     foreach($sql as $row){
         $if = 1;
         $img = base64_encode($row['book_image']);
-        echo "<div class='b2'> 
-        <div class='image-container'>
-            <img src='data:image/png;base64,{$img}' alt='book image'>
-        </div>
-        <p>{$row['title']}</p>
+        echo "
+        <div class='b2'>
+            <a href='detail.php?id={$row['book_id']}'>
+                <div class='image-container'>
+                    <img src='data:image/png;base64,{$img}' alt='book image'>
+                </div>
+                <p>{$row['title']}</p>
+            </a>
         </div>";
     }
     
