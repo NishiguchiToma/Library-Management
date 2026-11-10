@@ -1,3 +1,4 @@
+<?php require 'menu.php'; ?>
 <!DOCTYPE html>
 
 <html lang="ja">
@@ -6,23 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お気に入り | 図書管理システム</title>
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="stylesheet" href="css/favorite.css">
+    <!-- <link rel="stylesheet" href="css/favorite.css"> -->
 </head>
 <body>
     
 <!-- 共通ヘッダー -->
-<header class="header">
-    <h1><a href="home.php">図書管理システム</a></h1>
 
-    <nav class="nav-menu">
-        <a href="confirm.php">貸出確認</a>
-        <a href="favorite.php">お気に入り</a>
-        <a href="expired.php">期限切れ</a>
-        <a href="new_book.php">本登録</a>
-        <a href="history.php">履歴</a>
-        <a href="index.php">ログアウト</a>
-    </nav>
-</header>
 
 <!-- お気に入り画面 -->
 <main class="favorite-main">
