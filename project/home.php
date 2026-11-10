@@ -83,6 +83,9 @@ if($word == ''){
         <div class='b2'>
             <a href='detail.php?id={$row['book_id']}'>
                 <div class='image-container'>
+                    <p class='star'>
+                        {$star}
+                    </p>
                     <img src='data:image/png;base64,{$img}' alt='book image'>
                 </div>
                 <p>{$row['title']}</p>
