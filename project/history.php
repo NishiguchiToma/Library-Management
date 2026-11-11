@@ -69,7 +69,7 @@ if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
         <table>
             <thead>
                 <tr>
-                    <th>返却日/返却予定日</th>
+                    <th>日付</th>
                     <th>名前</th>
                     <th>タイトル</th>
                 </tr>
