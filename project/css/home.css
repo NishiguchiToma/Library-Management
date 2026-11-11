@@ -17,16 +17,32 @@
 
 /* 3:4 の「縦長」比率を保つ画像枠 */
 .b2 .image-container {
+    position: relative;           /* ★「貸し出し中」バッジの配置基準 */
     width: 100%;
     aspect-ratio: 3 / 4;          /* 縦長（横3：縦4）の固定比率 */
     background-color: #0d475a;    /* 隙間を埋めるテーマカラー */
-    
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;             /* はみ出た部分を綺麗にマスク */
     border-radius: 6px;
     box-sizing: border-box;
+}
+
+/* ★画像左上の「貸し出し中」バッジ */
+.b2 .ren {
+    position: absolute;           /* 画像の上に重ねて配置 */
+    top: 0;                       /* 上端に固定 */
+    left: 0;                      /* 左端に固定 */
+    z-index: 10;                  /* 画像より手前に表示 */
+    background-color: #7ed97e;    /* 明るい緑色の背景 */
+    color: #ffffff;               /* 白文字 */
+    font-size: 0.75rem;           /* 文字サイズ */
+    font-weight: bold;
+    padding: 4px 8px;             /* 内側の余白 */
+    line-height: 1.2;
+    white-space: nowrap;          /* 文字が縦に折り返されるのを防ぐ */
+    pointer-events: none;         /* バッジの上からでもクリック可能にする */
 }
 
 /* 画像自体（隙間なく枠を埋め、ホバー時のアニメーションを設定） */

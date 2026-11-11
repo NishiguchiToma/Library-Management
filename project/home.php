@@ -83,7 +83,16 @@ if($word == ''){
         echo "
         <div class='b2'>
             <a href='detail.php?id={$row['book_id']}'>
-                <div class='image-container'>
+                <div class='image-container'>";
+
+        if($row['count']==0){
+            echo "
+            <div class='ren'>
+                貸し出し中
+            </div>";
+            }
+
+        echo"
                     <p class='star'>
                         {$star}
                     </p>
@@ -109,11 +118,19 @@ if($word == ''){
     foreach($sql as $row){
         $if = 1;
         $img = base64_encode($row['book_image']);
+
         echo "
         <div class='b2'>
             <a href='detail.php?id={$row['book_id']}'>
-                <div class='image-container'>
-                    <img src='data:image/png;base64,{$img}' alt='book image'>
+                <div class='image-container'>";
+        if($row['count']==0){
+            echo "
+            <div class='ren'>
+                貸し出し中
+            </div>";
+            }
+        echo "
+                <img src='data:image/png;base64,{$img}' alt='book image'>
                 </div>
                 <p>{$row['title']}</p>
             </a>
