@@ -36,13 +36,11 @@ if (!$row) {
 }
 
 // お気に入り状態のチェック
-$star = "★";
 $is_favorite = false;
 $sq = $pdo->prepare('SELECT * FROM favorite WHERE book_id = ? AND user_id = ?');
 $sq->execute([$b_id, $u_id]);
 $ro = $sq->fetch(PDO::FETCH_ASSOC);
 if ($ro) {
-    $star = "★";
     $is_favorite = true; // 登録済みのフラグ
 }
 
@@ -58,7 +56,7 @@ $c = $row['count'];
 </head>
 <body>
 
-    <!-- 全体を囲む2カラムコンテナ -->
+    <!-- 全体を囲むグリッドコンテナ -->
     <div class="detail-container">
         
         <!-- 左側：本画像 ＆ 右上に重ねるお気に入りボタン -->
@@ -72,13 +70,13 @@ $c = $row['count'];
                     <input type="hidden" name="f_b" value="<?= htmlspecialchars($b_id, ENT_QUOTES, 'UTF-8') ?>">
                     <!-- 登録状態によってクラスを切り替え (is-favorite) -->
                     <button type="submit" class="favorite-btn <?= $is_favorite ? 'is-favorite' : '' ?>" title="お気に入り登録/解除">
-                        <?= $star ?>
+                        ★
                     </button>
                 </form>
             </div>
         </div>
 
-        <!-- 右側：詳細情報 ＆ 借りるボタン -->
+        <!-- 右側：詳細情報エリア（テキストテーブルのみ） -->
         <div class="detail-right">
             <div class="detail-table">
                 <div class="detail-label">タイトル</div>
@@ -93,8 +91,10 @@ $c = $row['count'];
                 <div class="detail-label">補足</div>
                 <div class="detail-value"><?= htmlspecialchars($row['hosoku'] ?? '', ENT_QUOTES, 'UTF-8') ?></div>
             </div>
+        </div>
 
-            <!-- 借りるボタン -->
+        <!-- ★完全に独立した「借りる」ボタンエリア（左右の列をまたいで中央に配置） -->
+        <div class="rental-area">
             <button type="button" class="rental-btn" onclick="document.getElementById('dg').showModal()">借りる</button>
         </div>
 

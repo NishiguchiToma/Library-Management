@@ -6,25 +6,25 @@ body {
     background-color: #fff;
 }
 
-/* === 全体レイアウト（メニューバーの中心線にコンテンツの中心を完全一致させる） === */
+/* === 全体レイアウト（画面幅の中央線で左右均等分割） === */
 .detail-container {
-    display: flex;
-    justify-content: center; /* 左右の中央に配置 */
-    align-items: center;     /* 縦方向の中心を揃える */
-    gap: 70px;               /* 画像と説明文の間隔 */
-    max-width: 800px;        /* ★メニューバーの幅と完全に一致させる */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 左右50%:50%に分割して中央線を定義 */
+    column-gap: 180px;               /* 画像と説明文の間隔 */
+    row-gap: 35px;                  /* 画像・文章と下段ボタンの縦の隙間 */
     width: 100%;
-    margin: 40px auto;       /* 画面中央に配置 */
+    max-width: 900px;
+    margin: 40px auto;
     padding: 0 20px;
     box-sizing: border-box;
 }
 
-/* 左側：画像エリア */
+/* === 左側：画像エリア（中央線の「左側」にピタッと寄せる） === */
 .detail-left {
+    justify-self: end;  
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-shrink: 0;
 }
 
 /* 3:4の縦長固定比率の画像枠 */
@@ -64,7 +64,7 @@ body {
     cursor: pointer;
     padding: 0;
     line-height: 1;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); 
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); /* 写真の上でも見やすいように黒い影をつける */
     transition: transform 0.1s ease, color 0.2s ease;
 }
 
@@ -72,18 +72,19 @@ body {
     transform: scale(1.1); 
 }
 
-/* お気に入り登録済み（選択時）のとき：白色にする */
+/* お気に入り登録済み（選択時）のとき：白色 */
 .favorite-btn.is-favorite {
     color: #ffffff;     /* 選択時：白色 */
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); 
 }
 
-/* 右側：情報エリア */
+/* === 右側：情報エリア（中央線の「右側」から配置） === */
 .detail-right {
+    justify-self: start; 
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    flex-grow: 1;
+    width: 100%;
+    max-width: 320px;    
 }
 
 /* 項目と値をきれいに並べるグリッド配置 */
@@ -108,6 +109,13 @@ body {
     word-break: break-all;
 }
 
+/* === ★完全独立した「借りる」ボタンのエリア（左右の列をまたいで画面中央に配置） === */
+.rental-area {
+    grid-column: 1 / -1; /* グリッドの左端から右端まで結合して1行使用 */
+    display: flex;
+    justify-content: center; /* 完全に画面中央に配置 */
+}
+
 /* 「借りる」ボタンのスタイル */
 .rental-btn {
     background-color: #0d475a;
@@ -116,10 +124,9 @@ body {
     border-radius: 4px;
     font-size: 0.95rem;  
     font-weight: bold;
-    padding: 10px 35px;  
+    padding: 10px 45px;  
     cursor: pointer;
     text-align: center;
-    width: fit-content;
     box-shadow: 0 3px 8px rgba(13, 71, 90, 0.2);
     transition: opacity 0.2s ease;
 }
