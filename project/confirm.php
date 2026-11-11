@@ -11,12 +11,24 @@ if (!isset($_SESSION['use']) || !isset($_SESSION['use']['id'])) {
 
 $login_user_id = $_SESSION['use']['id'];
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['l_id'])){
+    $lend_id = $_POST['l_id'];
+    $sql_update = "UPDATE lending SET return_day = CURDATE() WHERE lending_id = ?";
+    $stmt_update = $pdo->prepare($sql_update);
+    $stmt_update->execute([$lend_id]);
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+    
+}
+
+
 try {
     $sql = "SELECT 
                 l.rental_day, 
                 l.return_day, 
                 l.yotei, 
-                b.title 
+                l.lending_id,
+                b.title
             FROM lending l
             LEFT JOIN book b ON l.book_id = b.book_id
             WHERE l.user_id = ?
@@ -88,6 +100,16 @@ try {
                             <td><?= $date_str ?></td>
                             <td><?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                             <td><span class="<?= $status_class ?>"><?= $status_text ?></span></td>
+                            <?php
+                            if($status_text!=="返却済"){
+                            echo"
+                            <td>
+                                <form action=''method='post'>
+                                    <input type='hidden' name='l_id' value='{$row['lending_id']}'>
+                                    <input type='submit' value='返却'>
+                                </form>
+                            </td>";}
+                            ?>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
