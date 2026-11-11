@@ -68,6 +68,7 @@ $genre = Genre::cases();
 <!-- 本棚のグリッド表示エリア -->
 <div class="b1">
 <?php
+$star = $star ?? '';
 if($word == ''){
     if($s_genre == ''){
         $sql = $pdo->query('select * from book');
