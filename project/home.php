@@ -93,12 +93,12 @@ if($word == ''){
             }
 
         echo"
-                    <p class='star'>
-                        {$star}
-                    </p>
-                    <img src='data:image/png;base64,{$img}' alt='book image'>
-                </div>
-                <p>{$row['title']}</p>
+            <p class='star'>
+                {$star}
+            </p>
+            <img src='data:image/png;base64,{$img}' alt='book image'>
+        </div>
+            <p>{$row['title']}</p>
             </a>
         </div>";
     }

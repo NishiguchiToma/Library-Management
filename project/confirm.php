@@ -1,6 +1,5 @@
 <?php
 session_start();
-require 'menu.php'; 
 require 'config/database.php';
 
 // ログインしているかどうかのチェック
@@ -18,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['l_id'])){
     $stmt_update->execute([$lend_id]);
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
-    
 }
 
+require 'menu.php'; 
 
 try {
     $sql = "SELECT 
@@ -95,27 +94,49 @@ try {
                             // 日付の表示形式（未返却なら予定日まで、返却済なら返却日まで）
                             $date_str = htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') . '~' . 
                                         htmlspecialchars(!empty($row['return_day']) ? $row['return_day'] : $row['yotei'], ENT_QUOTES, 'UTF-8');
+                            $dialog_id = 'dg_' . htmlspecialchars($row['lending_id'], ENT_QUOTES, 'UTF-8');
                         ?>
+                        
                         <tr>
                             <td><?= $date_str ?></td>
                             <td><?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                             <td><span class="<?= $status_class ?>"><?= $status_text ?></span></td>
-                            <?php
-                            if($status_text!=="返却済"){
-                            echo"
                             <td>
-                                <form action=''method='post'>
-                                    <input type='hidden' name='l_id' value='{$row['lending_id']}'>
-                                    <input type='submit' value='返却'>
-                                </form>
-                            </td>";}
-                            ?>
+                            <?php if (empty($row['return_day'])): ?>
+                                <button type="button"
+                                data-id="<?= htmlspecialchars($row['lending_id'], ENT_QUOTES, 'UTF-8') ?>" 
+                                data-title="<?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                onclick="openReturnDialog(this.dataset.id, this.dataset.title)">
+                                返却</button>
+                            <?php endif; ?>
+                            </td>
                         </tr>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
         </table>
     <?php endif; ?>
 
+    <dialog id="return-dg">
+        <form action="" method="post">
+            <p class="dialog-message" id="dialog-book-title"></p>
+            <input type="hidden" name="l_id" id="dialog-lending-id">
+            <div class="detail-dialog-buttons">
+                <button type="submit" class="dialog-btn-yes">はい</button>
+                <button type="button" class="dialog-btn-no" onclick="document.getElementById('return-dg').close()">いいえ</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        function openReturnDialog(lendingId, bookTitle) {
+            // 選択された本のIDをhiddenフィールドにセット
+            document.getElementById('dialog-lending-id').value = lendingId;
+            // ダイアログのメッセージに本のタイトルを表示
+            document.getElementById('dialog-book-title').textContent = '「' + bookTitle + '」を返却しますか？';
+            // ダイアログを開く
+            document.getElementById('return-dg').showModal();
+        }
+    </script>
 </body>
 </html>
