@@ -100,8 +100,7 @@ try {
                         <tr>
                             <td><?= $date_str ?></td>
                             <td><?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><span class="<?= $status_class ?>"><?= $status_text ?></span></td>
-                            <td>
+                            <td><span class="<?= $status_class ?>"><?= $status_text ?></span>
                             <?php if (empty($row['return_day'])): ?>
                                 <button type="button"
                                 data-id="<?= htmlspecialchars($row['lending_id'], ENT_QUOTES, 'UTF-8') ?>" 
@@ -133,7 +132,7 @@ try {
             // 選択された本のIDをhiddenフィールドにセット
             document.getElementById('dialog-lending-id').value = lendingId;
             // ダイアログのメッセージに本のタイトルを表示
-            document.getElementById('dialog-book-title').textContent = '「' + bookTitle + '」を返却しますか？';
+            document.getElementById('dialog-book-title').textContent = '「   ' + bookTitle + '   」を返却しますか？';
             // ダイアログを開く
             document.getElementById('return-dg').showModal();
         }
