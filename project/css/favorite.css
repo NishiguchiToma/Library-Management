@@ -99,6 +99,7 @@ body {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .book {
@@ -144,6 +145,14 @@ body {
     margin-top: 15px;
     text-align: center;
     font-size: 14px;
+}
+
+/* お気に入りがない場合の表示 */
+.empty-message {
+    width: 100%;
+    text-align: center !important;
+    margin: 0 auto;
+    display: block;
 }
 
 /* スマホ版 */
