@@ -45,7 +45,9 @@ $favorite_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <?php if (empty($favorite_list)): ?>
 
-           <p class="empty-message">お気に入りの本はありません。</p>
+           <p class="empty-message" style="text-align: center; width: 100%;">
+    お気に入りの本はありません。
+            </p>
 
         <?php else: ?>
 
