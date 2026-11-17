@@ -96,8 +96,11 @@ $c = $row['count'];
         <!-- ★完全に独立した「借りる」ボタンエリア（左右の列をまたいで中央に配置） -->
         <div class="rental-area">
             <button type="button" class="rental-btn" onclick="document.getElementById('dg').showModal()">借りる</button>
+            <form action="edit.php" method="post">
+                <input type="hidden" name="b_id" value="<?= htmlspecialchars($b_id, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="submit" value="編集">
+            </form>
         </div>
-
     </div>
 
     <!-- 借りる確認用ダイアログ -->
@@ -114,8 +117,7 @@ $c = $row['count'];
                     <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">いいえ</button>
                 </div>
             </form>
-        <?php endif; ?>
-    </dialog>
-
+            <?php endif; ?>
+        </dialog>
 </body>
 </html>
