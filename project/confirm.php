@@ -1,7 +1,11 @@
 <?php
+// エラー表示設定（必要に応じて0にしてください）
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
-require 'menu.php'; 
-require 'config/database.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/../vendor/autoload.php'; // Composerのオートロード
 
 // ログインしているかどうかのチェック
 if (!isset($_SESSION['use']) || !isset($_SESSION['use']['id'])) {
@@ -11,16 +15,101 @@ if (!isset($_SESSION['use']) || !isset($_SESSION['use']['id'])) {
 
 $login_user_id = $_SESSION['use']['id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['l_id'])){
-    $lend_id = $_POST['l_id'];
-    $sql_update = "UPDATE lending SET return_day = CURDATE() WHERE lending_id = ?";
-    $stmt_update = $pdo->prepare($sql_update);
-    $stmt_update->execute([$lend_id]);
-    header('Location: ' . $_SERVER['PHP_SELF']);
-    exit;
-    
+/* ==========================================
+    返却処理 ＆ 在庫数更新 ＆ メール通知処理
+========================================== */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['l_id'])) {
+    $b_id = $_POST['b_id'];
+    $lend_id = $_POST['lend_id'] ?? $_POST['l_id']; // フォームのインプット名に合わせて安全に取得
+
+    try {
+        // 1. 書籍の在庫数（count）を +1 する
+        $sq = $pdo->prepare('UPDATE book SET count = count + 1 WHERE book_id = ?');
+        $sq->execute([$b_id]);
+
+        // 2. 貸出データの return_day を今日の日付に更新（まだ返却されていないものに限定）
+        $sql_update = "UPDATE lending SET return_day = CURDATE() WHERE lending_id = ? AND user_id = ? AND return_day IS NULL";
+        $stmt_update = $pdo->prepare($sql_update);
+        $stmt_update->execute([$lend_id, $login_user_id]);
+
+        // 3. 実際に返却更新が成功した場合のみ、お気に入り登録者へのメール送信処理を行う
+        if ($stmt_update->rowCount() === 1) {
+
+            // 書籍タイトルを取得（メール本文用）
+            $sql_book = "SELECT title FROM book WHERE book_id = ?";
+            $stmt_book = $pdo->prepare($sql_book);
+            $stmt_book->execute([$b_id]);
+            $book_row = $stmt_book->fetch(PDO::FETCH_ASSOC);
+            $book_title = $book_row['title'] ?? '書籍';
+
+            // 4. この本をお気に入り登録しているユーザーを取得（アドレスが存在するもの）
+            $sql_favorite = "
+                SELECT DISTINCT u.user_id, u.name, u.address AS email 
+                FROM favorite AS f 
+                INNER JOIN `users` AS u ON f.user_id = u.user_id 
+                WHERE f.book_id = ? AND u.address IS NOT NULL AND u.address <> ''
+            ";
+            $stmt_favorite = $pdo->prepare($sql_favorite);
+            $stmt_favorite->execute([$b_id]);
+            $favorite_users = $stmt_favorite->fetchAll(PDO::FETCH_ASSOC);
+
+            // 5. Gmailの認証情報（★テストで成功したご自身の情報に書き換えてください）
+            $smtp_user = 'oharatosyo@gmail.com'; // 送信元Gmailアドレス
+            $smtp_pass = 'liqrgvhfpstxzjii';    // 16桁のアプリパスワード
+
+            // 6. お気に入り登録者へメールを送信
+            foreach ($favorite_users as $user) {
+                if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+                    continue;
+                }
+
+                try {
+                    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+
+                    // SMTP設定（テストで動作確認済みの設定）
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = $smtp_user;
+                    $mail->Password = $smtp_pass;
+                    $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+                    $mail->CharSet = 'UTF-8';
+                    $mail->Timeout = 10;
+
+                    // 送信元・送信先
+                    $mail->setFrom($smtp_user, '図書館管理システム');
+                    $mail->addAddress($user['email'], $user['name'] ?? '');
+
+                    // メールの内容
+                    $mail->isHTML(false);
+                    $mail->Subject = 'お気に入り登録した本が返却されました';
+                    $mail->Body = $user['name'] . " 様\n\n" .
+                        "お気に入り登録している本が返却されました！\n\n" .
+                        "書籍名：" . $book_title . "\n\n" .
+                        "ぜひ図書管理システムからご確認ください。\n\n" .
+                        "図書館管理システム";
+
+                    $mail->send();
+
+                } catch (\Throwable $e) {
+                    // 個別のメール送信エラーは処理を止めずに続行、または必要に応じてデバッグ
+                }
+            }
+        }
+
+        // 処理が完了したら元のページにリフレッシュ
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+
+    } catch (PDOException $e) {
+        echo "<h1>データベースエラー</h1>";
+        echo "<p style='color:red;'>" . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</p>";
+        exit;
+    }
 }
 
+require 'menu.php'; 
 
 try {
     $sql = "SELECT 
@@ -28,6 +117,7 @@ try {
                 l.return_day, 
                 l.yotei, 
                 l.lending_id,
+                l.book_id,
                 b.title
             FROM lending l
             LEFT JOIN book b ON l.book_id = b.book_id
@@ -96,26 +186,46 @@ try {
                             $date_str = htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') . '~' . 
                                         htmlspecialchars(!empty($row['return_day']) ? $row['return_day'] : $row['yotei'], ENT_QUOTES, 'UTF-8');
                         ?>
+                        
                         <tr>
                             <td><?= $date_str ?></td>
                             <td><?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><span class="<?= $status_class ?>"><?= $status_text ?></span></td>
-                            <?php
-                            if($status_text!=="返却済"){
-                            echo"
-                            <td>
-                                <form action=''method='post'>
-                                    <input type='hidden' name='l_id' value='{$row['lending_id']}'>
-                                    <input type='submit' value='返却'>
-                                </form>
-                            </td>";}
-                            ?>
+                            <td><span class="<?= $status_class ?>"><?= $status_text ?></span>
+                            <?php if (empty($row['return_day'])): ?>
+                                <button type="button"
+                                data-id="<?= htmlspecialchars($row['lending_id'], ENT_QUOTES, 'UTF-8') ?>" 
+                                data-book-id="<?= htmlspecialchars($row['book_id'], ENT_QUOTES, 'UTF-8') ?>"
+                                data-title="<?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                onclick="openReturnDialog(this.dataset.id, this.dataset.bookId, this.dataset.title)">
+                                返却</button>
+                            <?php endif; ?>
+                            </td>
                         </tr>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
         </table>
     <?php endif; ?>
 
+    <dialog id="return-dg">
+        <form action="" method="post">
+            <p class="dialog-message" id="dialog-book-title"></p>
+            <input type="hidden" name="l_id" id="dialog-lending-id">
+            <input type="hidden" name="b_id" id="dialog-book-id">
+            <div class="detail-dialog-buttons">
+                <button type="submit" class="dialog-btn-yes">はい</button>
+                <button type="button" class="dialog-btn-no" onclick="document.getElementById('return-dg')->close()">いいえ</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        function openReturnDialog(lendingId, bookId, bookTitle) {
+            document.getElementById('dialog-lending-id').value = lendingId;
+            document.getElementById('dialog-book-id').value = bookId; 
+            document.getElementById('dialog-book-title').textContent = '「 ' + bookTitle + ' 」を返却しますか？';
+            document.getElementById('return-dg').showModal();
+        }
+    </script>
 </body>
 </html>
