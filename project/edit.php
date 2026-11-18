@@ -6,10 +6,6 @@ require 'menu.php';
 $b_id = $_POST['b_id'] ?? $_POST['book_id'] ?? '';
 $u_id = $_SESSION['use']['id'] ?? '';
 $edit=$_POST['book_id']??'';
-$er="";
-$t=$_POST["title"];
-$g=$_POST["genre"];
-$c=$_POST["count"];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($edit)){
         $sql2 =$pdo->prepare( 'UPDATE book SET title=?,genre=?,count=?,hosoku=? where book_id=?');
         $sql2->execute([$_POST["title"],$_POST["genre"],$_POST["count"],$_POST["hosoku"],$edit]);
@@ -116,7 +112,7 @@ enum Genre: string
                 </div>
             </form>
             <div class="rental-area">
-                <button type="button" class="rental-btn" onclick="document.getElementById('dg').showModal()">編集を確定</button>
+                <button type="button" class="rental-btn" onclick="checkForm()">編集を確定</button>
                 <form action="" method="post">
                     <input type="hidden" name="b_id" value="<?= htmlspecialchars($b_id, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="submit" value="リセット">
@@ -125,27 +121,43 @@ enum Genre: string
             </div>
         </div>
 
-        <script>
-             const values = <?php echo json_encode([$t, $g, $c], JSON_UNESCAPED_UNICODE); ?>;
-               // 2. 一つでも空（null, undefined, 空文字, スペースのみ）があるか判定
-             const hasEmpty = values.some(val => val === null || val === undefined || String(val).trim() === '');
-             if (hasEmpty){
-                <?php $er="1" ?>
-             }
-        </script>
-
         <dialog id="dg">
-        <?php if(!empty($er)): ?>
-            <p class="dialog-message" style="color: red;">補足 以外は必須項目です。</p>
-            <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">閉じる</button>
-        <?php else: ?>
+            <div id="dg-error" style="display: none;">
+                <p class="dialog-message" style="color: red;">補足 以外は必須項目です。</p>
+                <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">閉じる</button>
+            </div>
+        <div id="dg-confirm" style="display: none;">
             <p class="dialog-message">編集を確定しますか？</p>
             <div class="detail-dialog-buttons">
                 <button type="submit" form="edit-form" class="dialog-btn-yes">はい</button>
                 <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">いいえ</button>
             </div>
-        <?php endif; ?>
+        </div>
         </dialog>
+
+<script>
+function checkForm() {
+    // 現在の入力欄の値を取得
+    const title = document.querySelector('input[name="title"]').value.trim();
+    const genre = document.querySelector('select[name="genre"]').value.trim();
+    const count = document.querySelector('input[name="count"]').value.trim();
+
+    const errorArea = document.getElementById('dg-error');
+    const confirmArea = document.getElementById('dg-confirm');
+
+    // いずれかが空か判定
+    if (title === '' || genre === '' || count === '') {
+        errorArea.style.display = 'block';
+        confirmArea.style.display = 'none';
+    } else {
+        errorArea.style.display = 'none';
+        confirmArea.style.display = 'block';
+    }
+
+    // ダイアログを開く
+    document.getElementById('dg').showModal();
+}
+</script>
 
         <dialog id="dg2">
             <p class="dialog-message">この本を削除しますか？</p>
