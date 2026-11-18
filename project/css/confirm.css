@@ -80,3 +80,110 @@ td[colspan="3"] {
     color: red;
     font-weight: bold;
 }
+
+/* ==========================================
+   「返却」ボタンのスタイル
+========================================== */
+td button[type="button"] {
+    background-color: #0d475a; /* メインカラー */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+}
+
+td button[type="button"]:hover {
+    background-color: #093442;
+}
+
+/* ==========================================
+   「返却」ボタンのスタイル
+========================================== */
+td button[type="button"] {
+    background-color: #0d475a; /* メインカラー */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: background-color 0.2s;
+}
+
+td button[type="button"]:hover {
+    background-color: #093442;
+}
+
+/* ==========================================
+   ダイアログ（ポップアップ）のスタイル（詳細画面と完全一致）
+========================================== */
+dialog#return-dg {
+    border: 2px solid #0d475a;
+    border-radius: 8px;
+    padding: 35px 50px;     /* ★詳細画面と同じ左右50pxのパディングに戻す */
+    background-color: #fff;
+    box-shadow: 0 6px 24px rgba(13, 71, 90, 0.2);
+    text-align: center;
+    max-width: 400px;       /* ★余計な width や min-width は外す */
+}
+
+/* ダイアログの背景（ダーク効果） */
+dialog#return-dg::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* ダイアログ内のメッセージ */
+.dialog-message {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0d475a;
+    margin-bottom: 25px;
+    margin-top: 0;
+    line-height: 1.5;
+}
+
+/* ボタンを配置するエリア */
+.detail-dialog-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+/* 「はい」ボタン（赤字） */
+.dialog-btn-yes {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+/* 「いいえ」ボタン（黒字） */
+.dialog-btn-no {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+/* ホバー時の演出 */
+.dialog-btn-yes:hover, 
+.dialog-btn-no:hover {
+    opacity: 0.7;
+}
