@@ -61,7 +61,6 @@ $favorite_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- お気に入り画面 -->
     <main class="main">
         <h2>お気に入り</h2>
-        <p class="description">本のタイトル</p>
         <div class="favorite-list" id="favoriteList">
             <?php if (empty($favorite_list)): ?>
                 <p class="empty-message" style="text-align: center; width: 100%;">

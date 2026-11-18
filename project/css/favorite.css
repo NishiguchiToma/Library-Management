@@ -1,226 +1,135 @@
-/* 全体 */
-* {
-    box-sizing: border-box;
-}
-
+/* ==========================================
+   ページ全体の基本設定
+========================================== */
 body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #333;
     margin: 0;
     padding: 0;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-    color: #333;
     background-color: #fff;
 }
 
-/* ヘッダー */
-.header {
-    width: 100%;
-    padding: 25px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* メインコンテンツエリア */
+.main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-.header h1 {
-    margin: 0 0 25px;
-    font-size: 28px;
+/* 見出しのデザイン（他のページと完全統一） */
+.main h2 {
+    font-size: 22px;
+    color: #0d475a;
     text-align: center;
-}
-
-/* メニュー */
-.navigation {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.navigation a {
-    display: block;
-    padding: 8px 20px;
-    border: 1px solid #999;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.navigation a + a {
-    border-left: none;
-}
-
-.navigation a:hover {
-    background-color: #eee;
-}
-
-/* 現在の画面 */
-.navigation a.active {
-    background-color: #ddd;
+    margin-top: 0px;
+    margin-bottom: 30px;
     font-weight: bold;
 }
 
-/* ハンバーガーメニュー */
-.menu-button {
-    display: none;
-    width: 46px;
-    height: 42px;
-    padding: 8px;
-    border: 1px solid #999;
-    background-color: white;
-    cursor: pointer;
-}
-
-.menu-button span {
-    display: block;
-    height: 1px;
-    margin: 5px 0;
-    background-color: #333;
-}
-
-/* メイン */
-.main {
-    width: 100%;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-}
-
-.main h2 {
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 22px;
-}
-
+/* 「本のタイトル」などのサブ説明文 */
 .description {
-    margin-bottom: 30px;
     text-align: center;
-    font-size: 14px;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 30px;
+    font-weight: bold;
 }
 
-/* お気に入り一覧 */
+/* ==========================================
+   お気に入りリストのエリア
+========================================== */
 .favorite-list {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    /* text-align: center; */
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
+/* 各本のアイテム（チェックボックス付き行） */
 .book {
     display: flex;
     align-items: center;
-    gap: 12px;
-    min-height: 44px;
-    margin-bottom: 16px;
-    padding: 5px 10px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px 18px;
     cursor: pointer;
-    font-size: 15px;
+    transition: all 0.2s;
 }
 
-.book input {
-    width: 16px;
-    height: 16px;
+.book:hover {
+    background-color: #f0f4f6;
+    border-color: #0d475a;
+}
+
+/* チェックボックスのスタイル調整 */
+.book input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #0d475a; /* チェック時の色をメインカラーに */
+    margin-right: 15px;
     cursor: pointer;
 }
 
-/* 削除ボタン */
-.button-area {
-    margin-top: 30px;
+/* タイトルテキスト */
+.book span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* お気に入りがない場合のメッセージ */
+.empty-message {
+    color: #666;
+    font-weight: bold;
+    font-size: 1rem;
     text-align: center;
+    padding: 30px 0;
 }
 
+/* ==========================================
+   ボタン・操作エリア
+========================================== */
+.button-area {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.button-area p {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* 「解除」ボタン（他の画面のボタンと完全統一） */
 .delete-button {
-    min-width: 120px;
-    padding: 10px 25px;
+    background-color: #0d475a; /* メインカラー */
+    color: #fff;
     border: none;
-    background-color: #333;
-    color: white;
-    font-size: 16px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 40px;
     cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 3px 8px rgba(13, 71, 90, 0.2);
+    transition: background-color 0.2s, opacity 0.2s;
 }
 
 .delete-button:hover {
-    background-color: #555;
+    background-color: #093442;
 }
 
-/* メッセージ */
+/* メッセージ表示用（JS用） */
 #message {
-    min-height: 24px;
-    margin-top: 15px;
     text-align: center;
-    font-size: 14px;
-}
-
-/* お気に入りがない場合の表示 */
-p .empty-message {
-    width: 100%;
-    text-align: center !important;
-    margin: 0 auto;
-    display: block;
-}
-
-/* スマホ版 */
-@media screen and (max-width: 600px) {
-
-    .header {
-        position: relative;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-    }
-
-    .header h1 {
-        margin: 0;
-        font-size: 18px;
-        text-align: left;
-    }
-
-    /* スマホではボタンを表示 */
-    .menu-button {
-        display: block;
-        flex-shrink: 0;
-    }
-
-    /* メニューを最初は隠す */
-    .navigation {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 10;
-        width: 100%;
-        flex-direction: column;
-        background-color: white;
-        border-top: 1px solid #ddd;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* ボタンを押したら表示 */
-    .navigation.open {
-        display: flex;
-    }
-
-    .navigation a {
-        padding: 15px 20px;
-        border: none;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .navigation a + a {
-        border-left: none;
-    }
-
-    .main {
-        margin-top: 20px;
-        padding: 15px;
-    }
-
-    .main h2 {
-        font-size: 20px;
-    }
-
-    .favorite-list {
-        max-width: 100%;
-    }
-
-    .book {
-        min-height: 44px;
-    }
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
 }
