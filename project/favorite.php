@@ -79,8 +79,9 @@ $favorite_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
         </div>
         <div class="button-area">
+            <p>選択したものをまとめてお気に入り解除</p>
             <button type="button" class="delete-button" id="deleteButton">
-                削除
+                解除
             </button>
         </div>
         <p id="message"></p>
