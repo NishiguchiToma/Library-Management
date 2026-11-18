@@ -18,6 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($edit)){
              </script>";
     }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete_id'])) {
+    $del_sql = $pdo->prepare('DELETE FROM book WHERE book_id = ?');
+    $del_sql->execute([$_POST['delete_id']]);
+    echo "<script>alert('削除しました'); location.href='home.php';</script>";
+    exit;
+}
+
 // 本情報の取得
 $sql = $pdo->prepare('SELECT * FROM book WHERE book_id = ?');
 $sql->execute([$b_id]);
@@ -114,6 +121,7 @@ enum Genre: string
                     <input type="hidden" name="b_id" value="<?= htmlspecialchars($b_id, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="submit" value="リセット">
                 </form>
+                <button type="button" class="rental-btn" onclick="document.getElementById('dg2').showModal()">本を削除</button>
             </div>
         </div>
 
@@ -122,12 +130,12 @@ enum Genre: string
                // 2. 一つでも空（null, undefined, 空文字, スペースのみ）があるか判定
              const hasEmpty = values.some(val => val === null || val === undefined || String(val).trim() === '');
              if (hasEmpty){
-                <?php $er=1 ?>
+                <?php $er="1" ?>
              }
         </script>
 
         <dialog id="dg">
-        <?php if($er==1): ?>
+        <?php if(!empty($er)): ?>
             <p class="dialog-message" style="color: red;">補足 以外は必須項目です。</p>
             <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">閉じる</button>
         <?php else: ?>
@@ -137,6 +145,17 @@ enum Genre: string
                 <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">いいえ</button>
             </div>
         <?php endif; ?>
+        </dialog>
+
+        <dialog id="dg2">
+            <p class="dialog-message">この本を削除しますか？</p>
+            <div class="detail-dialog-buttons">
+                <form action="edit.php" method="post">
+                    <input type="hidden" name="delete_id" value="<?= htmlspecialchars($b_id, ENT_QUOTES, 'UTF-8') ?>">
+                    <button type="submit" class="dialog-btn-yes">はい</button>
+                </form>
+                <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg2').close()">いいえ</button>
+            </div>
         </dialog>
 </body>
 
