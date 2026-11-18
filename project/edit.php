@@ -6,14 +6,17 @@ require 'menu.php';
 $b_id = $_POST['b_id'] ?? $_POST['book_id'] ?? '';
 $u_id = $_SESSION['use']['id'] ?? '';
 $edit=$_POST['book_id']??'';
-
+$er="";
+$t=$_POST["title"];
+$g=$_POST["genre"];
+$c=$_POST["count"];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($edit)){
-     $sql2 =$pdo->prepare( 'UPDATE book SET title=?,genre=?,count=?,hosoku=? where book_id=?');
-     $sql2->execute([$_POST["title"],$_POST["genre"],$_POST["count"],$_POST["hosoku"],$edit]);
-    echo "<script>
-            alert('登録しました');
-          </script>";
-}
+        $sql2 =$pdo->prepare( 'UPDATE book SET title=?,genre=?,count=?,hosoku=? where book_id=?');
+        $sql2->execute([$_POST["title"],$_POST["genre"],$_POST["count"],$_POST["hosoku"],$edit]);
+       echo "<script>
+               alert('登録しました');
+             </script>";
+    }
 
 // 本情報の取得
 $sql = $pdo->prepare('SELECT * FROM book WHERE book_id = ?');
@@ -114,12 +117,26 @@ enum Genre: string
             </div>
         </div>
 
+        <script>
+             const values = <?php echo json_encode([$t, $g, $c], JSON_UNESCAPED_UNICODE); ?>;
+               // 2. 一つでも空（null, undefined, 空文字, スペースのみ）があるか判定
+             const hasEmpty = values.some(val => val === null || val === undefined || String(val).trim() === '');
+             if (hasEmpty){
+                <?php $er=1 ?>
+             }
+        </script>
+
         <dialog id="dg">
+        <?php if($er==1): ?>
+            <p class="dialog-message" style="color: red;">補足 以外は必須項目です。</p>
+            <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">閉じる</button>
+        <?php else: ?>
             <p class="dialog-message">編集を確定しますか？</p>
             <div class="detail-dialog-buttons">
                 <button type="submit" form="edit-form" class="dialog-btn-yes">はい</button>
                 <button type="button" class="dialog-btn-no" onclick="document.getElementById('dg').close()">いいえ</button>
             </div>
+        <?php endif; ?>
         </dialog>
 </body>
 
