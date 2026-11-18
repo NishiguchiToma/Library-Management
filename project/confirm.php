@@ -11,6 +11,9 @@ if (!isset($_SESSION['use']) || !isset($_SESSION['use']['id'])) {
 $login_user_id = $_SESSION['use']['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['l_id'])){
+    $b_id=$_POST['b_id'];
+    $sq=$pdo->prepare('update book set count = count +1 WHERE book_id = ?');
+    $sq->execute([$b_id]);
     $lend_id = $_POST['l_id'];
     $sql_update = "UPDATE lending SET return_day = CURDATE() WHERE lending_id = ?";
     $stmt_update = $pdo->prepare($sql_update);
@@ -27,6 +30,7 @@ try {
                 l.return_day, 
                 l.yotei, 
                 l.lending_id,
+                l.book_id,
                 b.title
             FROM lending l
             LEFT JOIN book b ON l.book_id = b.book_id
@@ -104,8 +108,9 @@ try {
                             <?php if (empty($row['return_day'])): ?>
                                 <button type="button"
                                 data-id="<?= htmlspecialchars($row['lending_id'], ENT_QUOTES, 'UTF-8') ?>" 
+                                data-book-id="<?= htmlspecialchars($row['book_id'], ENT_QUOTES, 'UTF-8') ?>"
                                 data-title="<?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                                onclick="openReturnDialog(this.dataset.id, this.dataset.title)">
+                                onclick="openReturnDialog(this.dataset.id, this.dataset.bookId, this.dataset.title)">
                                 返却</button>
                             <?php endif; ?>
                             </td>
@@ -120,6 +125,7 @@ try {
         <form action="" method="post">
             <p class="dialog-message" id="dialog-book-title"></p>
             <input type="hidden" name="l_id" id="dialog-lending-id">
+            <input type="hidden" name="b_id" id="dialog-book-id">
             <div class="detail-dialog-buttons">
                 <button type="submit" class="dialog-btn-yes">はい</button>
                 <button type="button" class="dialog-btn-no" onclick="document.getElementById('return-dg').close()">いいえ</button>
@@ -128,13 +134,11 @@ try {
     </dialog>
 
     <script>
-        function openReturnDialog(lendingId, bookTitle) {
-            // 選択された本のIDをhiddenフィールドにセット
-            document.getElementById('dialog-lending-id').value = lendingId;
-            // ダイアログのメッセージに本のタイトルを表示
-            document.getElementById('dialog-book-title').textContent = '「   ' + bookTitle + '   」を返却しますか？';
-            // ダイアログを開く
-            document.getElementById('return-dg').showModal();
+        function openReturnDialog(lendingId, bookId, bookTitle) {
+    document.getElementById('dialog-lending-id').value = lendingId;
+    document.getElementById('dialog-book-id').value = bookId; // 追加
+    document.getElementById('dialog-book-title').textContent = '「 ' + bookTitle + ' 」を返却しますか？';
+    document.getElementById('return-dg').showModal();
         }
     </script>
 </body>
