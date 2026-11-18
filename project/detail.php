@@ -9,6 +9,7 @@ $u_id = $_SESSION['use']['id'] ?? '';
 $f_user = $_POST['f_u'] ?? '';
 $f_book = $_POST['f_b'] ?? '';
 
+$role=$_SESSION['use']['role'];
 // お気に入りボタンが押されたときの処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($f_user) && !empty($f_book)) {
     $check = $pdo->prepare('SELECT * FROM favorite WHERE book_id = ? AND user_id = ?');
@@ -96,10 +97,12 @@ $c = $row['count'];
         <!-- ★完全に独立した「借りる」ボタンエリア（左右の列をまたいで中央に配置） -->
         <div class="rental-area">
             <button type="button" class="rental-btn" onclick="document.getElementById('dg').showModal()">借りる</button>
+            <?php if($role): ?>
             <form action="edit.php" method="post">
                 <input type="hidden" name="b_id" value="<?= htmlspecialchars($b_id, ENT_QUOTES, 'UTF-8') ?>">
                 <input type="submit" value="編集">
             </form>
+            <?php endif; ?>
         </div>
     </div>
 
