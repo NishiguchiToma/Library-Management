@@ -137,7 +137,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>貸出確認 - 図書館管理システム</title>
-    <link rel="stylesheet" href="css/history.css">
+    <link rel="stylesheet" href="css/confirm.css">
 </head>
 <body>
 
@@ -214,7 +214,7 @@ try {
             <input type="hidden" name="b_id" id="dialog-book-id">
             <div class="detail-dialog-buttons">
                 <button type="submit" class="dialog-btn-yes">はい</button>
-                <button type="button" class="dialog-btn-no" onclick="document.getElementById('return-dg')->close()">いいえ</button>
+                <button type="button" class="dialog-btn-no" onclick="document.getElementById('return-dg').close()">いいえ</button>
             </div>
         </form>
     </dialog>
@@ -223,7 +223,7 @@ try {
         function openReturnDialog(lendingId, bookId, bookTitle) {
             document.getElementById('dialog-lending-id').value = lendingId;
             document.getElementById('dialog-book-id').value = bookId; 
-            document.getElementById('dialog-book-title').textContent = '「 ' + bookTitle + ' 」を返却しますか？';
+            document.getElementById('dialog-book-title').textContent = 'この本を返しますか？';
             document.getElementById('return-dg').showModal();
         }
     </script>
