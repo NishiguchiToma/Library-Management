@@ -38,10 +38,20 @@ $lending_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
     <?php else: ?>
         <?php foreach ($lending_list as $row): ?>
+        <?php
+            $raw_title = $row['title'] ?? '';
+            $max_length = 14; // 制限したい文字数
+            if (mb_strlen($raw_title, 'UTF-8') > $max_length) {
+                $display_title = mb_substr($raw_title, 0, $max_length, 'UTF-8') . '...';
+            } else {
+                $display_title = $raw_title;
+            }
+        ?>
         <tr>
             <!-- htmlspecialcharsで安全な形に変換して表示 -->
             <td><?php echo htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+            <!-- ▼ 表示用には省略版のタイトルを使う ▼ -->
+            <td><?php echo htmlspecialchars($display_title, ENT_QUOTES, 'UTF-8'); ?></td>
             <td>
                 <?php echo htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8'); ?><span class="overdue-text">（+<?php echo htmlspecialchars($row['overdue_days'], ENT_QUOTES, 'UTF-8'); ?>日）</span>
             </td>

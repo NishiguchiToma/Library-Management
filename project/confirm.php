@@ -185,11 +185,19 @@ try {
                             // 日付の表示形式（未返却なら予定日まで、返却済なら返却日まで）
                             $date_str = htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') . '~' . 
                                         htmlspecialchars(!empty($row['return_day']) ? $row['return_day'] : $row['yotei'], ENT_QUOTES, 'UTF-8');
+
+                                        $raw_title = $row['title'] ?? '';
+                            $max_length = 14; // 制限したい文字数
+                            if (mb_strlen($raw_title, 'UTF-8') > $max_length) {
+                                $display_title = mb_substr($raw_title, 0, $max_length, 'UTF-8') . '...';
+                            } else {
+                                $display_title = $raw_title;
+                            }
                         ?>
                         
                         <tr>
                             <td><?= $date_str ?></td>
-                            <td><?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($display_title, ENT_QUOTES, 'UTF-8') ?></td>
                             <td><span class="<?= $status_class ?>"><?= $status_text ?></span>
                             <?php if (empty($row['return_day'])): ?>
                                 <button type="button"

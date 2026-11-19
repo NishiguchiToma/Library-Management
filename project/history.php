@@ -79,21 +79,33 @@ if (!isset($_SESSION['use']['role']) || $_SESSION['use']['role'] != 1) {
                     <tr>
                         <td colspan="3" style="text-align: center;">需要無いから誰も借りてない</td>
                     </tr>
-                <?php else: ?>
-                    <?php foreach ($histories as $row): ?>
-                        <tr>
-                            <td>
-                                <?php if (empty($row['return_day'])): ?>
-                                    <span class="status-red">(未) </span><?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~<?= htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8') ?>
-                                <?php else: ?>
-                                    (済) <?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~<?= htmlspecialchars($row['return_day'], ENT_QUOTES, 'UTF-8') ?>
+                    <?php else: ?>
+                                    <?php foreach ($histories as $row): ?>
+                                        <?php
+                                            // ▼ ここから追加：タイトルの文字数制限（例：20文字以上は「...」にする）
+                                            $raw_title = $row['title'] ?? '';
+                                            $max_length = 14; // 制限したい文字数
+                                            if (mb_strlen($raw_title, 'UTF-8') > $max_length) {
+                                                $display_title = mb_substr($raw_title, 0, $max_length, 'UTF-8') . '...';
+                                            } else {
+                                                $display_title = $raw_title;
+                                            }
+                                            // ▲ ここまで追加 ▲
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <?php if (empty($row['return_day'])): ?>
+                                                    <span class="status-red">(未) </span><?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~<?= htmlspecialchars($row['yotei'], ENT_QUOTES, 'UTF-8') ?>
+                                                <?php else: ?>
+                                                    (済) <?= htmlspecialchars($row['rental_day'], ENT_QUOTES, 'UTF-8') ?>~<?= htmlspecialchars($row['return_day'], ENT_QUOTES, 'UTF-8') ?>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td><?= htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                                            <!-- ▼ 表示用には省略版のタイトルを使う ▼ -->
+                                            <td><?= htmlspecialchars($display_title, ENT_QUOTES, 'UTF-8') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 <?php endif; ?>
-                            </td>
-                            <td><?= htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($row['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
             </tbody>
         </table>
     <?php endif; ?>
