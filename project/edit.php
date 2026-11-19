@@ -101,7 +101,7 @@ enum Genre: string
                     <div class="detail-label">在庫数</div>
                     <div class="detail-value">
                         <div class="form-input">
-                            <input type="number" name="count" min="1" value="<?= htmlspecialchars($row['count'] ?? 1, ENT_QUOTES, 'UTF-8') ?>" class="number-input">
+                            <input type="number" name="count" min="0" value="<?= htmlspecialchars($row['count'] ?? 1, ENT_QUOTES, 'UTF-8') ?>" class="number-input">
                         </div>
                     </div>
 
