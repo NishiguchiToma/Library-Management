@@ -2,6 +2,12 @@
 <?php require 'config/database.php'; ?>
 
 <?php
+function is_mobile() {
+    $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    // スマホ・タブレット特有の文字列が含まれるか判定
+    $pattern = '/(iPhone|iPod|iPad|Android.*Mobile|Windows Phone|BlackBerry)/i';
+    return preg_match($pattern, $ua) === 1;
+    }
 $er="";
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     unset($_SESSION['use']);
@@ -16,9 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             'id'=>$row['user_id'],'pas'=>$row['password'],'name'=>$row['name'],'adr'=>$row['address'],'role'=>$row['role']
         ];
     }
+    
     if(isset($_SESSION['use'])){
-        header('Location: home.php');
-        exit;
+        if (is_mobile()) {
+            // スマホアクセス
+            header('Location: ../projectS/home.php');
+            exit; 
+            } else {
+                // PCアクセス
+            header('Location:home.php');
+            exit;
+        }
     }else{
         $er="IDまたはパスワードが違います";
     }
