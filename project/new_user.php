@@ -32,7 +32,7 @@ $check->execute([$id]);
         if($pas==$pas2){
             if($check->fetchColumn()==0){
                 $ins=$pdo->prepare('insert into users (user_id, password,name,address,role) values (?, ?,?,?,?)');
-                if(true){
+                if(str_starts_with($id,"M")){
                     $role=true;
                 }else{
                     $role=false;
